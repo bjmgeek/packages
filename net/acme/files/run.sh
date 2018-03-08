@@ -137,6 +137,7 @@ issue_cert()
     local enabled
     local use_staging
     local update_uhttpd
+    local use_dns_challenge
     local keylength
     local domains
     local main_domain
@@ -147,6 +148,7 @@ issue_cert()
     config_get_bool enabled "$section" enabled 0
     config_get_bool use_staging "$section" use_staging
     config_get_bool update_uhttpd "$section" update_uhttpd
+    config_get_bool use_dns_challenge "$section" use_dns_challenge
     config_get domains "$section" domains
     config_get keylength "$section" keylength
     config_get webroot "$section" webroot
@@ -179,6 +181,9 @@ issue_cert()
     acme_args="$acme_args --keylength $keylength"
     [ -n "$ACCOUNT_EMAIL" ] && acme_args="$acme_args --accountemail $ACCOUNT_EMAIL"
     [ "$use_staging" -eq "1" ] && acme_args="$acme_args --staging"
+
+    if [ "$use_dns_challenge" -eq 1 ]; then
+    
 
     if [ -z "$webroot" ]; then
         log "Using standalone mode"
